@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "django-vite-starter"
+version = "0.1.0"
+description = ""
+authors = ["Joseph Ditton <jditton.atomic@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.0.0"
+requests = "^2.31.0"
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
