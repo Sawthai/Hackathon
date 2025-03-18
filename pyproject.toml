@@ -2,7 +2,7 @@
 name = "hackathon"
 version = "0.1.0"
 description = ""
-authors = ["Joseph Ditton <jditton.atomic@gmail.com>"]
+authors = ["Eh The Moo Htoo <ehthemoo@gmail.com>", "Ryan Grotzky <ryan.grotzky@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
