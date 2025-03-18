@@ -2,12 +2,16 @@ from django.shortcuts import render
 from django.conf  import settings
 import json
 import os
+import requests
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import GroceryList, Item
 
+
+
 # Load manifest when server launches
 MANIFEST = {}
+
 if not settings.DEBUG:
     f = open(f"{settings.BASE_DIR}/core/static/manifest.json")
     MANIFEST = json.load(f)
@@ -42,3 +46,36 @@ def create_list(req):
         )
         item.save()
     return JsonResponse({"success": True})
+
+def test_gemini_api(req):
+    # Ensure the view only handles POST requests
+    data = json.loads(req.body)
+    # Parse the incoming JSON payload
+
+    prompt = data.get("prompt")
+    if not prompt:
+        return JsonResponse({"error": "A 'prompt' field is required."}, status=400)
+
+    # Use the officially documented endpoint for Google Gemini
+
+    # Construct the payload per the official API documentation
+    payload = {
+        "prompt": prompt,
+        # Include any additional parameters as required by the Gemini API
+    }
+
+    try:
+        # Use the requests library to perform an HTTP POST request
+        response = req.post(url, headers=headers, json=payload)
+        response.raise_for_status()  # Raise an error for non-2xx responses
+        return JsonResponse(response.json())
+    except req.HTTPError as http_err:
+        return JsonResponse({
+            "error": f"HTTP error occurred: {http_err}",
+            "status_code": response.status_code,
+            "response": response.text
+        }, status=response.status_code)
+    except Exception as e:
+        return JsonResponse({"error": f"Error generating response: {e}"}, status=500)
+    
+    
