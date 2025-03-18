@@ -1,17 +1,27 @@
-import React, { useState } from "react"
-import { Link } from "react-router-dom"
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios"; // Import Axios for API calls
 
 export const Home = () => {
-  const [userMessage, setUserMessage] = useState("")
-  const [botResponse, setBotResponse] = useState("")
+  const [userMessage, setUserMessage] = useState("");
+  const [botResponse, setBotResponse] = useState("");
 
-  const handleSend = () => {
-    // For now, just log the user message and set a placeholder response
-    console.log("User message:", userMessage)
-    setBotResponse("Hello world!")
-    // Reset the input
-    setUserMessage("")
-  }
+  const handleSend = async () => {
+    if (!userMessage.trim()) return; // Prevent sending empty messages
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/chat/", {
+        message: userMessage,
+      });
+
+      setBotResponse(response.data.response); // Update bot's response
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setBotResponse("Error communicating with AI.");
+    }
+
+    setUserMessage(""); // Clear input field after sending
+  };
 
   return (
     <div>
@@ -29,8 +39,8 @@ export const Home = () => {
         />
         <br />
         <button onClick={handleSend}>Send</button>
-        
-        {/* Display the bot's response if available */}
+
+        {/* Display the bot's response */}
         {botResponse && (
           <div style={{ marginTop: "10px" }}>
             <strong>AI Response:</strong> {botResponse}
@@ -38,5 +48,5 @@ export const Home = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
