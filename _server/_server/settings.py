@@ -104,10 +104,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = "registration/sign_in/"
 
 # CORS Allowed Origins
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://example.com",
-]
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 # Load Gemini API Key securely
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')

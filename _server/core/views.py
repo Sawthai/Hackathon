@@ -56,7 +56,7 @@ def ai_chat(request):
     # Explicitly handle OPTIONS
     if request.method == "OPTIONS":
         response = JsonResponse({"detail": "OK"})
-        response["Access-Control-Allow-Origin"] = "http://localhost:5173"  # Or use *
+        response["Access-Control-Allow-Origin"] = "*" # Or use *
         response["Access-Control-Allow-Methods"] = "POST, OPTIONS"
         response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
         return response
