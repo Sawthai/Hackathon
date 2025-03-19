@@ -18,8 +18,6 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-secret-key')
 # Debug mode (should be False in production)
 DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
-# Allowed Hosts
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
 
 # Installed apps
 INSTALLED_APPS = [
@@ -37,9 +35,10 @@ INSTALLED_APPS = [
 
 # Middleware
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Fixed typo here
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Fixed typo here
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

@@ -21,9 +21,6 @@ const router = createHashRouter([
       }, {
         path: "/grocery_list/:id",
         element: <h1>I am on the the list page</h1>
-      },{
-        path: "chat/",
-        element: <GeminiTest />
       }
     ]
   }

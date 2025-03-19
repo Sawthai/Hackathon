@@ -10,7 +10,7 @@ export const GeminiTest = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/test_gemini/");
+      const res = await fetch("/chat/");
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Unknown error occurred");

@@ -49,23 +49,39 @@ def create_list(req):
     return JsonResponse({"success": True})
 
 # Load the API Key
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 
-# Define the AI processing function
+
 @csrf_exempt
 def ai_chat(request):
+    # Explicitly handle OPTIONS
+    if request.method == "OPTIONS":
+        response = JsonResponse({"detail": "OK"})
+        response["Access-Control-Allow-Origin"] = "http://localhost:5173"  # Or use *
+        response["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        return response
+    
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            user_message = data.get("message", "")
+            user_query = data.get("query", "")
+            
+            if not user_query:
+                return JsonResponse({"error": "Query is required"}, status=400)
 
-            if not user_message:
-                return JsonResponse({"error": "Message is required"}, status=400)
+            instructions = """
+                Talk to me like a one year old
+            """
 
-            # Call Gemini AI
-            model = genai.GenerativeModel("gemini-pro")
-            response = model.generate_content(user_message)
+            prompt = f"""
+            {instructions}
+            
+            User Query: {user_query}
+            """
 
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content(prompt)
+            
             return JsonResponse({"response": response.text})
         
         except Exception as e:

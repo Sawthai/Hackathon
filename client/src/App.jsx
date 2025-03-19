@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router'
+import { Outlet, Link } from 'react-router-dom'
 
 function App() {
   async function logout() {
@@ -20,7 +20,7 @@ function App() {
       <nav>
         <button onClick={logout}>Logout</button>
         {/* Add a navigation link to the chat page */}
-        <Link to="/chat" style={{ marginLeft: "10px" }}>
+        <Link to="api/chat" style={{ marginLeft: "10px" }}>
           Chat with Gemini
         </Link>
       </nav>

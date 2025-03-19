@@ -11,7 +11,7 @@ export const Home = () => {
 
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/chat/", {
-        message: userMessage,
+        query: userMessage,
       });
 
       setBotResponse(response.data.response); // Update bot's response
