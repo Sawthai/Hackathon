@@ -16,7 +16,7 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #13b92f;
+  background: #21b9bc;
   padding: 30px;
 }
 
@@ -111,7 +111,7 @@ background: #ddd;
 .sign_in_button {
 border: none;
 outline: none;
-background: green;
+background: rgb(49, 188, 183);
 color: white;
 font-size: 1rem;
 font-weight: 600;
@@ -302,7 +302,7 @@ color: #13b92f;
 }
 .forms .form-content .button input{
   color: #fff;
-  background: #13b92f;
+  background: #133fb9;
   border-radius: 6px;
   padding: 0;
   cursor: pointer;
@@ -394,3 +394,4 @@ color: #13b92f;
   background-color: white;
   padding: 30px;
 }
+

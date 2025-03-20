@@ -19,6 +19,9 @@ function App() {
     <>
       <header>
       <nav class="navbar">
+        <ul class="links">
+          <Link to="/grocery_list/new/">Create new list</Link>
+        </ul>
         <button onClick={logout} class="login-btn">Logout</button>
       </nav>
     </header>
