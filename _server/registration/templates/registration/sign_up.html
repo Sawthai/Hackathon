@@ -1,32 +1,70 @@
 {% extends "registration/base.html"%}
 
 {% block content %}
-<form action="/registration/sign_up/" method="post">
-  {% csrf_token %}
-  <div>
-    <label>
-      First Name
-      <input type="text" name="first_name">
-    </label>
+<div class = "container">
+  <div class="cover">
+    <div class="back">
+      <div class="text">
+        <span class="text-1">Complete miles of journey <br> with one step</span>
+        <span class="text-2">Let's get started</span>
+      </div>
+    </div>
   </div>
-  <div>
-    <label>
-      Last Name
-      <input type="text" name="last_name">
-    </label>
+
+  <div class="forms">
+    <div class="form-content">
+      <div class="signup-form">
+        <div class="title">Signup</div>
+        <form action="/registration/sign_up/" method="post">
+          {% csrf_token %}
+          <div class="cover">
+            <div class="front">
+              <div class="text">
+                <span class="text-1">Our Mission</span>
+                <span class="text-2">To provide accessible, personalized, and empathetic mental health support using AI, helping users manage stress, anxiety, 
+                  and emotional well-being through thoughtful conversation, guided exercises, and evidence-based resources.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-boxes">
+
+            <div class="input-box">
+              <label>
+                <i class="fas fa-user"></i>
+                <input type="text" name="first_name" placeholder="Enter your first name">
+              </label>
+            </div>
+
+            <div class="input-box">
+              <label>
+                <i class="fas fa-user"></i>
+                <input type="text" name="last_name" placeholder="Enter your last name">
+              </label>
+            </div>
+
+            <div class="input-box">
+              <label>
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="Enter your email">
+              </label>
+            </div>
+
+            <div class="input-box">
+              <label>
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="Enter your password">
+              </label>
+            </div>
+
+          </div>
+          
+          <button class="create_account_button">Create Account</button>
+        </form>
+      </div>
+    </div>
   </div>
-  <div>
-    <label>
-      Email
-      <input type="email" name="email">
-    </label>
-  </div>
-  <div>
-    <label>
-      Password
-      <input type="password" name="password">
-    </label>
-  </div>
-  <button>Create Account</button>
-</form>
+  
+</div>
+
 {% endblock %}

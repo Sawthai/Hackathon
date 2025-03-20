@@ -1,22 +1,50 @@
 {% extends "registration/base.html"%}
 
 {% block content %}
-<form action="/registration/sign_in/" method="post">
-  {% csrf_token %}
-  <div>
-    <label>
-      Email
-      <input type="email" name="email">
-    </label>
-  </div>
-  <div>
-    <label>
-      Password
-      <input type="password" name="password">
-    </label>
-  </div>
-  <button>Sign In</button>
+<div class = "container">
 
-</form>
+  <div class="cover">
+    <div class="front">
+      <div class="text">
+        <span class="text-1">Your Thoughts Matter</span>
+        <span class="text-2">AI That Understands</span> 
+      </div>
+    </div>
+  </div>
+  
+  <div class="forms">
+    <div class="form-content">
+      <div class="login-form">
+        <div class="title">Login</div>
+        <form action="/registration/sign_in/" method="post">
+          {% csrf_token %}
+
+          <div class="input-boxes">
+            <div class="input-box">
+              <label>
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="email" placeholder="Enter your email">
+              </label>
+            </div>
+
+            <div class="input-box">
+              <label>
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="Enter your password">
+              </label>
+            </div>
+          </div>
+          
+
+          <div class="button input-box">
+            <button class="sign_in_button">Sign In</button>
+          </div>
+            
+        </form>
+      </div>
+    </div>
+    
+</div>
+
 <a href="/registration/sign_up/">Create New Account</a>
 {% endblock %}
