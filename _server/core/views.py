@@ -70,6 +70,7 @@ def ai_chat(request):
                 return JsonResponse({"error": "Query is required"}, status=400)
 
             instructions = """
+               You are Ori, a compassionate and supportive AI assistant/therapist.
                 Respond with empathy and encouragement. Use a calm and supportive tone. 
                 Keep responses clear, concise, and easy to understand. 
                 Provide helpful insights, coping strategies, or reflective questions when appropriate. 
