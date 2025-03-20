@@ -22,6 +22,7 @@ function App() {
         <ul class="links">
           <Link to="/">Home</Link>
           <Link to="/grocery_list/new/">Create new list</Link>
+          <Link to="/meditation/">Meditation</Link>
         </ul>
         <button onClick={logout} class="login-btn">Logout</button>
       </nav>
