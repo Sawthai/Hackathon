@@ -17,13 +17,11 @@ function App() {
 
   return (
     <>
-      <nav>
-        <button onClick={logout}>Logout</button>
-        {/* Add a navigation link to the chat page */}
-        <Link to="api/chat" style={{ marginLeft: "10px" }}>
-          Chat with Gemini
-        </Link>
+      <header>
+      <nav class="navbar">
+        <button onClick={logout} class="login-btn">Logout</button>
       </nav>
+    </header>
       <Outlet />
     </>
   );

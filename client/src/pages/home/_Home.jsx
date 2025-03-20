@@ -25,8 +25,7 @@ export const Home = () => {
 
   return (
     <div>
-      <Link to="/grocery_list/new">Create new list</Link>
-      <div>I am on the home page, build me later!</div>
+      
 
       <div style={{ marginTop: "20px" }}>
         <h2>AI Chat Prototype</h2>

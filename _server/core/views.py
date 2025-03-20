@@ -70,7 +70,11 @@ def ai_chat(request):
                 return JsonResponse({"error": "Query is required"}, status=400)
 
             instructions = """
-                Talk to me like a one year old
+                Respond with empathy and encouragement. Use a calm and supportive tone. 
+                Keep responses clear, concise, and easy to understand. 
+                Provide helpful insights, coping strategies, or reflective questions when appropriate. 
+                Avoid making medical diagnoses or prescribing treatments. 
+                Ensure responses promote emotional well-being and mental resilience.
             """
 
             prompt = f"""
