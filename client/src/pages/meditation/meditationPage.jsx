@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import beachSound from '../../assets/beach.mp3';
-import rainSound from '../../assets/rain.mp3';
-import beachLogo from './svg/beach.svg';
+import React, { useState, useEffect, useRef } from 'react';
 
 export const MeditationPage = () => {
   const [feeling, setFeeling] = useState('');
   const [meditationText, setMeditationText] = useState('');
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
-  const [audio, setAudio] = useState(null);
   const [selectedSound, setSelectedSound] = useState(null);
   const [intervalId, setIntervalId] = useState(null);
   const [rotationDegree, setRotationDegree] = useState(0);
   const [selectedTimeInMinutes, setSelectedTimeInMinutes] = useState(5);
+  const [playInLoop, setPlayInLoop] = useState(false);
 
+  // Use ref for audio to prevent overlapping sounds
+  const audioTune = useRef(new Audio('/static/sounds/beach.mp3'));
+
+  useEffect(() => {
+    audioTune.current.load();
+  }, []);
+
+  useEffect(() => {
+    audioTune.current.loop = playInLoop;
+  }, [playInLoop]);
 
   // Start Meditation with a given time (in seconds)
   const handleStartMeditation = (minutes) => {
@@ -37,15 +44,20 @@ export const MeditationPage = () => {
     if (timerActive) {
       clearInterval(intervalId);
       setTimerActive(false);
+      audioTune.current.pause();
     } else {
+      audioTune.current.play();
       const id = setInterval(() => {
         setTimeRemaining((prevTime) => {
           if (prevTime <= 1) {
             clearInterval(id);
+            setTimeRemaining(0); // Stop the timer at 0
+            audioTune.current.pause(); // Stop the audi owhen the timer hits 0
             return 0;
           }
           return prevTime - 1;
         });
+
         // Update rotation degree for the animation
         setRotationDegree((prevDegree) => prevDegree + (360 / (selectedTimeInMinutes * 60 / timeRemaining)));
       }, 1000);
@@ -60,18 +72,20 @@ export const MeditationPage = () => {
     clearInterval(intervalId);
     setTimerActive(false);
     setRotationDegree(0); // Reset rotation on replay
+    audioTune.current.pause();
+    audioTune.current.currentTime = 0; // Stop and reset audio
   };
 
   // Handle sound selection
   const handleSoundSelect = (sound) => {
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
+    if (audioTune.current) {
+      audioTune.current.pause();
+      audioTune.current.currentTime = 0; // Stop any currently playing sound
     }
-    const newAudio = new Audio(sound);
-    newAudio.loop = true;
-    setAudio(newAudio);
-    newAudio.play();
+    audioTune.current = new Audio(sound);
+    audioTune.current.loop = true; // Loop the audio
+    audioTune.current.play(); // Play the new selected sound
+    setSelectedSound(sound); // Track the selected sound
   };
 
   // Format time (mm:ss)
@@ -97,7 +111,7 @@ export const MeditationPage = () => {
       />
       <div style={styles.buttonContainer}>
         <button onClick={() => handleStartMeditation(1)} style={styles.startButton}>
-          Start 1 Minutes
+          Start 1 Minute
         </button>
         <button onClick={() => handleStartMeditation(2)} style={styles.startButton}>
           Start 2 Minutes
@@ -111,8 +125,6 @@ export const MeditationPage = () => {
 
       <div className="meditation">
         <div className="player-container" style={styles.playerContainer}>
-          <audio className="song" src={selectedSound} loop />
-
           <button onClick={handlePlayPause} style={styles.playButton}>
             {timerActive ? 'Pause' : 'Play'}
           </button>
@@ -143,10 +155,10 @@ export const MeditationPage = () => {
         </div>
 
         <div className="sound-picker" style={styles.soundPicker}>
-          <button onClick={() => handleSoundSelect(rainSound)} style={styles.soundButton}>
+          <button onClick={() => handleSoundSelect('/static/sounds/rain.mp3')} style={styles.soundButton}>
             Rain
           </button>
-          <button onClick={() => handleSoundSelect(beachSound)} style={styles.soundButton}>
+          <button onClick={() => handleSoundSelect('/static/sounds/beach.mp3')} style={styles.soundButton}>
             Beach
           </button>
         </div>
@@ -154,7 +166,6 @@ export const MeditationPage = () => {
     </div>
   );
 };
-
 // Inline styles for components
 const styles = {
   container: {
