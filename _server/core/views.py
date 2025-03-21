@@ -5,7 +5,7 @@ import os
 import requests
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import GroceryList, Item
+from .models import GroceryList, Item, ChatMessage
 import google.generativeai as genai
 from django.views.decorators.csrf import csrf_exempt
 
@@ -51,6 +51,27 @@ def create_list(req):
 # Load the API Key
 
 
+
+@login_required
+def create_list(req):
+    body =  json.loads(req.body)
+    # TODO validate data
+    grocery_list = GroceryList(
+        name=body["name"],
+        user=req.user
+    )
+    grocery_list.save()
+    for item_name in body["items"]:
+        item = Item(
+            grocery_list=grocery_list,
+            name=item_name,
+            purchased=False
+        )
+        item.save()
+    return JsonResponse({"success": True})
+
+# Load the API Key
+
 @csrf_exempt
 def ai_chat(request):
     # Explicitly handle OPTIONS
@@ -68,6 +89,13 @@ def ai_chat(request):
             
             if not user_query:
                 return JsonResponse({"error": "Query is required"}, status=400)
+            
+
+            ChatMessage.objects.create(
+                user=request.user,
+                sender='user',
+                message=user_query
+            )
 
             instructions = """
                You are Ori, a compassionate and supportive AI assistant/therapist.
@@ -93,6 +121,30 @@ def ai_chat(request):
             return JsonResponse({"error": str(e)}, status=500)
     
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+@csrf_exempt
+def summarize_chat_history(request):
+    try:
+        messages = ChatMessage.objects.filter(user=request.user).order_by("timestamp")[:20]
+        if not messages:
+            return JsonResponse({"summary": None})  # No history yet
+
+        history = "\n".join(f"{msg.sender}: {msg.message}" for msg in messages)
+
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        summary_prompt = f"""
+        Summarize the following previous conversation between a user and a supportive AI assistant named Ori:
+
+        {history}
+
+        Then ask a follow-up reflective question that continues the conversation.
+        """
+        response = model.generate_content(summary_prompt)
+
+        return JsonResponse({"summary": response.text})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
 
 
 
