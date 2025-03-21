@@ -6,7 +6,6 @@ import 'vite/modulepreload-polyfill'
 import {createHashRouter, RouterProvider} from "react-router-dom";
 import { Home } from './pages/home/_Home.jsx'
 import { NewList } from './pages/new_list/_NewList.jsx'
-import { GeminiTest } from './pages/home/_GeminiTest.jsx'
 import { MeditationPage } from './pages/meditation/meditationPage.jsx'
 const router = createHashRouter([
   {
