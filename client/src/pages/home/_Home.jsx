@@ -33,26 +33,6 @@ export const Home = () => {
     setUserMessage(""); // Clear input field
   };
 
-// Load recent chat history
-useEffect(() => {
-  const fetchHistory = async () => {
-    try {
-      const response = await axios.get("http://127.0.0.1:8000/api/chat/history/", {
-        withCredentials: true,
-      });
-      if (response.data.history) {
-        setChatHistory(response.data.history);
-      }
-    } catch (error) {
-      console.error("Error loading chat history:", error);
-    }
-  };
-
-  fetchHistory();
-}, []);
-
-  
-
   // Auto-scroll to the latest message
   useEffect(() => {
     chatContainerRef.current?.scrollIntoView({ behavior: "smooth" });
