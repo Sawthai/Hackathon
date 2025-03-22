@@ -1,3 +1,7 @@
+# Hackathon Application - AI for Mental Health: Personalized AI-driven Therapy and Mental Health Monitoring
+
+
+
 ## Creating a new application
 1. Clone the repo `git clone https://github.com/Sawthai/Hackathon.git`.
 2. This project was set up using Python 3.11. You might have an older version installed. If you run into an error later that says that your activated Python version isn't compatible, the in the pyproject.toml file, just change the version there to match the version that you have installed. If you do this, you need to make sure that the lock file gets regenerated. You can do this by running `poetry lock --no-update` or by simply deleting the poetry.lock file (it will get regenerated when you run poetry install)/
