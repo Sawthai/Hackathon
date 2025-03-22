@@ -5,7 +5,7 @@ import os
 import requests
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import GroceryList, Item
+from .models import SessionList, Item
 import google.generativeai as genai
 from django.views.decorators.csrf import csrf_exempt
 
@@ -30,23 +30,55 @@ def index(req):
     }
     return render(req, "core/index.html", context)
 
+
+
 @login_required
-def create_list(req):
-    body =  json.loads(req.body)
-    # TODO validate data
-    grocery_list = GroceryList(
+def my_session_lists(request):
+    # Get all session lists belonging to the user
+    session_lists = SessionList.objects.filter(user=request.user)
+    data = []
+    for session in session_lists:
+        # Optionally include associated items, if needed
+        items = list(session.item_set.values('id', 'name'))
+        data.append({
+            'id': session.id,
+            'name': session.name,
+            'items': items,
+        })
+    return JsonResponse({'session_lists': data})
+
+
+@login_required
+def create_session_list(req):
+    body = json.loads(req.body)
+    # TODO: Add data validation here
+    session_list = SessionList(
         name=body["name"],
         user=req.user
     )
-    grocery_list.save()
+    session_list.save()
     for item_name in body["items"]:
         item = Item(
-            grocery_list=grocery_list,
+            session_list=session_list,
             name=item_name,
-            purchased=False
         )
         item.save()
     return JsonResponse({"success": True})
+
+
+@login_required
+def delete_session_list(request, id):
+    if request.method == "DELETE":
+        try:
+            session = SessionList.objects.get(id=id, user=request.user)
+        except SessionList.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Session not found'}, status=404)
+        session.delete()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
+
+
 
 # Load the API Key
 
